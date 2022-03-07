@@ -1,4 +1,3 @@
-
 // defining all global constants
 // pinout for motor direction logic
 const int dirMotor_1_pin = 2;
