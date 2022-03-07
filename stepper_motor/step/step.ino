@@ -8,7 +8,6 @@ const int stepMotor_2_pin = 5;
 // pinout for wait and ready signal
 const int wait_pin = 6;
 const int ready_pin = 7;
-const int test_var = 9;
 
 void setup() {
   // Sets the two pins as Outputs
