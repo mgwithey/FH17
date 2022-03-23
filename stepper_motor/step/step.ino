@@ -50,6 +50,7 @@ void loop() {
     digitalWrite(stepMotor_1_pin,LOW);
     delayMicroseconds(500);
   }
+  
   delay(1000);
 }
 
