@@ -19,6 +19,9 @@ const int stepMotor_2_pin = 5;
 const int wait_pin = 6;
 const int ready_pin = 7;
 
+int com;
+bool move = true;
+
 // setup logic of pins
 void setup() {
   pinMode(dirMotor_1_pin,OUTPUT); 
@@ -28,30 +31,67 @@ void setup() {
   pinMode(wait_pin, OUTPUT);
   pinMode(ready_pin, INPUT); 
   Serial.begin(9600);
-  Serial.println('Starting program');
 }
 
 // main loop for program
 void loop() {
-  digitalWrite(dirMotor_1_pin,HIGH); // Enables the motor to move in a particular direction
-  for(int x = 0; x < 200; x++) {
-    digitalWrite(stepMotor_1_pin,HIGH); 
-    delayMicroseconds(500); 
-    digitalWrite(stepMotor_1_pin,LOW); 
-    delayMicroseconds(500); 
-  }
-  delay(1000);
+  while(Serial.available()==0) {}
+  com = Serial.read();
   
-  digitalWrite(dirMotor_1_pin,LOW);
-  // Makes 400 pulses for making two full cycle rotation
-  for(int x = 0; x < 400; x++) {
-    digitalWrite(stepMotor_1_pin,HIGH);
-    delayMicroseconds(500);
-    digitalWrite(stepMotor_1_pin,LOW);
-    delayMicroseconds(500);
-  }
+  switch(com) {
+
+    case 'e': {
+      digitalWrite(stepMotor_1_pin,LOW); 
+      delayMicroseconds(500); 
+      break;
+    }
+
+    case 'a': {
+      digitalWrite(dirMotor_1_pin,HIGH);
+      for(int x = 0; x < 100; x++) {
+        digitalWrite(stepMotor_1_pin,HIGH); 
+        delayMicroseconds(500); 
+        digitalWrite(stepMotor_1_pin,LOW); 
+        delayMicroseconds(500); 
+      }
+      break;
+    }
+
+    case 'd': {
+      digitalWrite(dirMotor_1_pin,LOW);
+      for(int x = 0; x < 100; x++) {
+        digitalWrite(stepMotor_1_pin,HIGH); 
+        delayMicroseconds(500); 
+        digitalWrite(stepMotor_1_pin,LOW); 
+        delayMicroseconds(500); 
+      }
+      break;
+    }
+
+    case 'w': {
+      digitalWrite(dirMotor_2_pin,HIGH);
+      for(int x = 0; x < 100; x++) {
+        digitalWrite(stepMotor_2_pin,HIGH); 
+        delayMicroseconds(500); 
+        digitalWrite(stepMotor_2_pin,LOW); 
+        delayMicroseconds(500); 
+      }
+      break;
+    }
+
+    case 's': {
+      digitalWrite(dirMotor_2_pin,LOW);
+      for(int x = 0; x < 100; x++) {
+        digitalWrite(stepMotor_2_pin,HIGH); 
+        delayMicroseconds(500); 
+        digitalWrite(stepMotor_2_pin,LOW); 
+        delayMicroseconds(500); 
+      }
+      break;
+    }
+
+  }  
   
-  delay(1000);
 }
 
 
