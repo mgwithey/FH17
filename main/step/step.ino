@@ -6,6 +6,8 @@ Authors: Alex Riehm, Jacob Dach, Jason Fry, Justn Kim, Matthew Withey, Tom Li
 
 */
 
+#include <AccelStepper.h>
+
 // defining all global constants
 // pinout for motor direction logic
 const int dirMotor_1_pin = 2;
@@ -22,6 +24,13 @@ const int ready_pin = 7;
 char current_case;
 int previous_case;
 
+const int MAXSPEED = 1000;
+const int MAXACCEL = 500;
+const int distance = 500;
+
+AccelStepper motorH(1, stepMotor_1_pin, dirMotor_1_pin);
+AccelStepper motorV(1, stepMotor_2_pin, dirMotor_2_pin);
+
 // setup logic of pins, open serial port
 void setup() {
   pinMode(dirMotor_1_pin,OUTPUT); 
@@ -30,6 +39,12 @@ void setup() {
   pinMode(stepMotor_2_pin,OUTPUT);
   pinMode(wait_pin, OUTPUT);
   pinMode(ready_pin, INPUT); 
+
+  motorH.setMaxSpeed(MAXSPEED);
+  motorH.setAcceleration(MAXACCEL);
+  motorH.setCurrentPosition(0);
+  
+  
   Serial.begin(9600);
 }
 
@@ -50,50 +65,23 @@ void loop() {
 
       // Move left
       case 'a': {
-        unsigned long start_time = micros();
-        digitalWrite(dirMotor_1_pin,HIGH);
-        for(int x = 0; x < 100; x++) {
-          digitalWrite(stepMotor_1_pin,HIGH); 
-          delayMicroseconds(500); 
-          digitalWrite(stepMotor_1_pin,LOW); 
-          delayMicroseconds(1); 
-        }
+        motorH.runToNewPosition(motorH.currentPosition()+distance);
         break;
       }
 
       // Move right
       case 'd': {
-        digitalWrite(dirMotor_1_pin,LOW);
-        for(int x = 0; x < 100; x++) {
-          digitalWrite(stepMotor_1_pin,HIGH); 
-          delayMicroseconds(500);
-          digitalWrite(stepMotor_1_pin,LOW); 
-          delayMicroseconds(1);
-        }
+        motorH.runToNewPosition(motorH.currentPosition()-distance);
         break;
       }
 
       // Move up
       case 'w': {
-        digitalWrite(dirMotor_2_pin,HIGH);
-        for(int x = 0; x < 100; x++) {
-          digitalWrite(stepMotor_2_pin,HIGH); 
-          delayMicroseconds(500); 
-          digitalWrite(stepMotor_2_pin,LOW); 
-          delayMicroseconds(500); 
-        }
         break;
       }
 
       // Move down
       case 's': {
-        digitalWrite(dirMotor_2_pin,LOW);
-        for(int x = 0; x < 100; x++) {
-          digitalWrite(stepMotor_2_pin,HIGH); 
-          delayMicroseconds(500); 
-          digitalWrite(stepMotor_2_pin,LOW); 
-          delayMicroseconds(500); 
-        }
         break;
       }
 
